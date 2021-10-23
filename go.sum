@@ -1,5 +1,5 @@
-github.com/mazrean/go-clone-detection v0.0.9 h1:xCU2lrwyXAH2/YDA9PMRdzqa7MuOd5DgXY5WZXG+K/4=
-github.com/mazrean/go-clone-detection v0.0.9/go.mod h1:uEqxrcP5hX34PRM44BRInUFz+XudGwwKIhoXcH21Skw=
+github.com/mazrean/go-clone-detection v0.0.10 h1:ll/vWXvPhytKp1aLq3gSHe1ba87AR4YqTYSff38q3BE=
+github.com/mazrean/go-clone-detection v0.0.10/go.mod h1:uEqxrcP5hX34PRM44BRInUFz+XudGwwKIhoXcH21Skw=
 github.com/yuin/goldmark v1.4.0/go.mod h1:mwnBkeHKe2W/ZEtQ+71ViKU8L12m81fl3OWwC1Zlc8k=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
 golang.org/x/crypto v0.0.0-20191011191535-87dc89f01550/go.mod h1:yigFU9vqHzYiE8UmvKecakEJjdnWj3jj499lnFckfCI=
