@@ -3,7 +3,7 @@ module github.com/mazrean/sdsniffer
 go 1.17
 
 require (
-	github.com/mazrean/go-clone-detection v0.0.9
+	github.com/mazrean/go-clone-detection v0.0.10
 	golang.org/x/tools v0.1.7
 )
 
