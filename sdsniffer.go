@@ -10,6 +10,11 @@ import (
 
 const doc = "sdsniffer is ..."
 
+var (
+	bufSize        int
+	tokenThreshold int
+)
+
 // Analyzer is ...
 var Analyzer = &analysis.Analyzer{
 	Name: "sdsniffer",
@@ -17,9 +22,18 @@ var Analyzer = &analysis.Analyzer{
 	Run:  run,
 }
 
+func init() {
+	Analyzer.Flags.IntVar(&bufSize, "buffer-size", 100, "buffer size")
+	Analyzer.Flags.IntVar(&tokenThreshold, "token-threshold", 10, "Threshold for number of consecutive tokens")
+}
+
 func run(pass *analysis.Pass) (interface{}, error) {
 	ctx := context.Background()
-	cloneDetector := clone.NewCloneDetector(nil)
+
+	cloneDetector := clone.NewCloneDetector(&clone.Config{
+		BufSize:   bufSize,
+		Threshold: tokenThreshold,
+	})
 
 	for _, file := range pass.Files {
 		err := cloneDetector.AddNode(ctx, file)
