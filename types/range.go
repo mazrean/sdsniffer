@@ -132,3 +132,25 @@ func (r *Range) Join(r2 *Range) (*Range, error) {
 		endColumn:   endColumn,
 	}, nil
 }
+
+func (r *Range) Distance(r2 *Range) (int, error) {
+	if r.FileName() != r2.FileName() {
+		return 0, errors.New("cannot join ranges from different files")
+	}
+
+	dist1 := r.End() - r2.Pos()
+	if dist1 < 0 {
+		dist1 = -dist1
+	}
+
+	dist2 := r2.End() - r.Pos()
+	if dist2 < 0 {
+		dist2 = -dist2
+	}
+
+	if dist1 < dist2 {
+		return int(dist1), nil
+	}
+
+	return int(dist2), nil
+}

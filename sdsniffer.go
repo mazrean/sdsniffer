@@ -30,7 +30,7 @@ var Analyzer = &analysis.Analyzer{
 func init() {
 	Analyzer.Flags.BoolVar(&useFilter, "filter", true, "use filter")
 	Analyzer.Flags.IntVar(&lineNumThreshold, "line-threshold", 3, "line number threshold")
-	Analyzer.Flags.IntVar(&lineNumPerOperation, "line-per-ops", 10, "line number per operation")
+	Analyzer.Flags.IntVar(&lineNumPerOperation, "line-per-ops", 3, "line number per operation")
 	Analyzer.Flags.IntVar(&bufSize, "buffer-size", 100, "buffer size")
 	Analyzer.Flags.IntVar(&tokenThreshold, "token-threshold", 0, "Threshold for number of consecutive tokens")
 }
