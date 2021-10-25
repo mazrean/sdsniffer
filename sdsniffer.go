@@ -60,10 +60,11 @@ func run(pass *analysis.Pass) (interface{}, error) {
 		pos := pass.Fset.Position(clonePair.Node1.Pos())
 		end := pass.Fset.Position(clonePair.Node1.End())
 		rng1 := types.NewRange(
-			clonePair.Node1,
 			pos.Filename,
+			clonePair.Node1.Pos(),
 			pos.Line,
 			pos.Column,
+			clonePair.Node1.End(),
 			end.Line,
 			end.Column,
 		)
@@ -71,10 +72,11 @@ func run(pass *analysis.Pass) (interface{}, error) {
 		pos = pass.Fset.Position(clonePair.Node2.Pos())
 		end = pass.Fset.Position(clonePair.Node2.End())
 		rng2 := types.NewRange(
-			clonePair.Node2,
 			pos.Filename,
+			clonePair.Node2.Pos(),
 			pos.Line,
 			pos.Column,
+			clonePair.Node2.End(),
 			end.Line,
 			end.Column,
 		)
