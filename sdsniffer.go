@@ -12,6 +12,7 @@ import (
 const doc = "sdsniffer is ..."
 
 var (
+	useFilter bool
 	bufSize        int
 	tokenThreshold int
 )
@@ -24,6 +25,7 @@ var Analyzer = &analysis.Analyzer{
 }
 
 func init() {
+	Analyzer.Flags.BoolVar(&useFilter, "filter", true, "use filter")
 	Analyzer.Flags.IntVar(&bufSize, "buffer-size", 100, "buffer size")
 	Analyzer.Flags.IntVar(&tokenThreshold, "token-threshold", 10, "Threshold for number of consecutive tokens")
 }
@@ -73,6 +75,19 @@ func run(pass *analysis.Pass) (interface{}, error) {
 		)
 
 		cloneRangePairs = append(cloneRangePairs, types.NewRangePair(rng1, rng2))
+	}
+
+	var filter Filter
+	if useFilter {
+		// TODO: implement filter
+		filter = NewNoFilter()
+	} else {
+		filter = NewNoFilter()
+	}
+
+	cloneRangePairs, err = filter.Filter(cloneRangePairs)
+	if err != nil {
+		return nil, fmt.Errorf("failed to filter: %v", err)
 	}
 
 	for _, cloneRangePair := range cloneRangePairs {
