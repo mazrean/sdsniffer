@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/mazrean/go-clone-detection"
+	"github.com/mazrean/sdsniffer/metrics"
 	"github.com/mazrean/sdsniffer/types"
 	"golang.org/x/tools/go/analysis"
 )
@@ -12,9 +13,11 @@ import (
 const doc = "sdsniffer is ..."
 
 var (
-	useFilter bool
-	bufSize        int
-	tokenThreshold int
+	useFilter           bool
+	lineNumThreshold    int
+	lineNumPerOperation int
+	bufSize             int
+	tokenThreshold      int
 )
 
 // Analyzer is ...
@@ -26,8 +29,10 @@ var Analyzer = &analysis.Analyzer{
 
 func init() {
 	Analyzer.Flags.BoolVar(&useFilter, "filter", true, "use filter")
+	Analyzer.Flags.IntVar(&lineNumThreshold, "line-threshold", 3, "line number threshold")
+	Analyzer.Flags.IntVar(&lineNumPerOperation, "line-per-ops", 10, "line number per operation")
 	Analyzer.Flags.IntVar(&bufSize, "buffer-size", 100, "buffer size")
-	Analyzer.Flags.IntVar(&tokenThreshold, "token-threshold", 10, "Threshold for number of consecutive tokens")
+	Analyzer.Flags.IntVar(&tokenThreshold, "token-threshold", 0, "Threshold for number of consecutive tokens")
 }
 
 func run(pass *analysis.Pass) (interface{}, error) {
@@ -52,8 +57,8 @@ func run(pass *analysis.Pass) (interface{}, error) {
 
 	cloneRangePairs := make([]*types.RangePair, 0, len(clonePairs))
 	for _, clonePair := range clonePairs {
-		pos := pass.Fset.Position(clonePair.Node2.Pos())
-		end := pass.Fset.Position(clonePair.Node2.End())
+		pos := pass.Fset.Position(clonePair.Node1.Pos())
+		end := pass.Fset.Position(clonePair.Node1.End())
 		rng1 := types.NewRange(
 			clonePair.Node1,
 			pos.Filename,
@@ -63,8 +68,8 @@ func run(pass *analysis.Pass) (interface{}, error) {
 			end.Column,
 		)
 
-		pos = pass.Fset.Position(clonePair.Node1.Pos())
-		end = pass.Fset.Position(clonePair.Node1.End())
+		pos = pass.Fset.Position(clonePair.Node2.Pos())
+		end = pass.Fset.Position(clonePair.Node2.End())
 		rng2 := types.NewRange(
 			clonePair.Node2,
 			pos.Filename,
@@ -79,8 +84,7 @@ func run(pass *analysis.Pass) (interface{}, error) {
 
 	var filter Filter
 	if useFilter {
-		// TODO: implement filter
-		filter = NewNoFilter()
+		filter = metrics.NewFilter(lineNumThreshold, lineNumPerOperation)
 	} else {
 		filter = NewNoFilter()
 	}

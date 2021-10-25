@@ -6,7 +6,7 @@ type Filter interface {
 	Filter([]*types.RangePair) ([]*types.RangePair, error)
 }
 
-type NoFilter struct {}
+type NoFilter struct{}
 
 func NewNoFilter() *NoFilter {
 	return &NoFilter{}
